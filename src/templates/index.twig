@@ -1,0 +1,9 @@
+{% extends '_layouts/elementindex' %}
+{% set title = 'Contact' %}
+{% set elementType = 'futureactivities\\contactapi\\elements\\Contact' %}
+
+{% block actionButton %}
+    <div class="buttons right">
+        <a href="{{ url('contactapi/export') }}" class="btn submit add icon">{{ "Export CSV"|t('app') }}</a>
+    </div>
+{% endblock %}

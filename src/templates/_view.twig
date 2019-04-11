@@ -1,0 +1,29 @@
+{% extends "_layouts/cp" %}
+
+{% set data = message %}
+{% set title = 'View Message #'~message.id %}
+
+{% block main %}
+<div id="content-container">
+    <div id="content">
+        <table class="data">
+    		<tbody>
+    			<tr><th>From</th><td>{{ data.fromName }} &lt;{{ data.fromEmail }}&gt;</td></tr>
+    			<tr><th>To</th><td>{{ data.recipient }}</td></tr>
+    			<tr><th>Sent</th><td>{{ data.dateCreated|date('H:i, D d M Y') }}</td></tr>
+    			<tr><th>Subject</th><td>{{ data.subject }}</td></tr>
+    		</tbody>
+    	</table>
+    	<h2>Message:</h2>
+    	<div class="message-wrapper">
+    	<table class="data fullwidth">
+    		<tbody>
+    			{% for label, value in data.data|json_decode %}
+    				<tr><th>{{ label|ucfirst }}</th><td>{{ value|nl2br }}</td></tr>
+    			{% endfor %}
+    		</tbody>
+    	</table>
+    	</div>
+    </div>
+</div>
+{% endblock %}

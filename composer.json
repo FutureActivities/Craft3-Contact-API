@@ -1,0 +1,22 @@
+{
+  "name": "futureactivities/craft3-contact-api",
+  "description": "Adds contact form support via the REST API",
+  "version": "1.0.1",
+  "type": "craft-plugin",
+  "require": {
+    "craftcms/cms": "^3.0.0",
+    "guzzlehttp/guzzle": "~6.0",
+    "futureactivities/craft3-rest-api": "^1.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "futureactivities\\contactapi\\": "src/"
+    }
+  },
+  "extra": {
+    "handle": "contactapi",
+    "name": "Contact API",
+    "developer": "Future Activities",
+    "developerUrl": "https://github.com/FutureActivities"
+  }
+}
