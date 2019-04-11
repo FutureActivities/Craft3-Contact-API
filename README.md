@@ -31,7 +31,7 @@ The following fields are not required but recommended in the post data:
 - `fromEmail` - The email address of the person sending the form
 - `subject` - Contact form subject
 
-## Template
+## Email Template
 
-The plugin comes with a basic HTML template that just lists all data in the post.
+The plugin comes with a basic HTML email template that just lists all data in the post.
 You can override this on a site level by adding the template `_contact.twig` in the root of the sites `templates` folder.
