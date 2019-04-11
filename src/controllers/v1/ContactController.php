@@ -95,11 +95,8 @@ class ContactController extends Controller
         $contact->subject = isset($data['subject']) ? $data['subject'] : 'Contact Form Enquiry';
         $contact->recipient = $to;
         
-        unset($data['subject'], $data['fromName'], $data['fromEmail']);
-        $contact->data = [
-            'field' => 'value',
-            'message' => 'sdfsdfsdf'
-        ];
+        unset($data['subject'], $data['fromName'], $data['fromEmail'], $data['g-recaptcha-response']);
+        $contact->data = $data;
         
         Craft::$app->elements->saveElement($contact);
     }
