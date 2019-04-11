@@ -30,6 +30,7 @@ The following fields are not required but recommended in the post data:
 - `fromName` - The name of the person sending the form
 - `fromEmail` - The email address of the person sending the form
 - `subject` - Contact form subject
+- `g-recaptcha-response` - For reCaptcha validation
 
 ## Email Template
 
