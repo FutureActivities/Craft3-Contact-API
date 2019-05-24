@@ -76,6 +76,15 @@ class Contact extends Element
         ];
     }
     
+    protected static function defineSearchableAttributes(): array
+    {
+        return [
+            'fromName',
+            'subject',
+            'recipient'
+        ];
+    }
+    
     protected static function defineSources(string $context = null): array
     {
         $sources = [

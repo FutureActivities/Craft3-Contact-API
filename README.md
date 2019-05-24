@@ -21,7 +21,7 @@ Requires the [Future Activities Craft 3 REST API](https://github.com/FutureActiv
 Where `entryId` points to an entry that contains one of the following fields:
 
 - `emailAddress` - Text field
-- `contactDetails` - Matrix field with a field of `detailsValue` which is a Link Field type (third party plugin)
+- `contactDetails` - Matrix field which either has a `email` field OR a field of `detailsValue` which is a Link Field type (third party plugin)
 
 ### Expected fields
 

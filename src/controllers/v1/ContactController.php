@@ -62,14 +62,21 @@ class ContactController extends Controller
             
         if (!$entry)
             throw new \Exception('Invalid request.');
-          
+        
         $sendTo = $settings->email;
         
         // Check for contact details Matrix field
         if (isset($entry->contactDetails)) {
             foreach ($entry->contactDetails AS $detail) {
-                if ($detail->detailsValue->type == 'email') {
+                // Third-party Link Field plugin
+                if (isset($detail->detailsValue) && $detail->detailsValue->type == 'email') {
                     $sendTo = $detail->detailsValue->value;
+                    break;
+                }
+                
+                // Plain text email field
+                if (isset($detail->email)) {
+                    $sendTo = $detail->email;
                     break;
                 }
             }
@@ -104,7 +111,7 @@ class ContactController extends Controller
     protected function sendEmail($to, $data)
     {
         $subject = isset($data['subject']) ? $data['subject'] : 'Contact Form Enquiry';
-        unset($data['subject']);
+        unset($data['subject'], $data['fromName'], $data['fromEmail'], $data['g-recaptcha-response']);
         
         $oldMode = \Craft::$app->view->getTemplateMode();
         
