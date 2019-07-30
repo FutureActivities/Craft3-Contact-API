@@ -161,6 +161,7 @@ class ContactController extends Controller
             $folderId = Plugin::getInstance()->assets->resolveVolumePath($settings->attachmentUploadLocationSource, $settings->attachmentUploadLocationSubpath);
             
             $attachments = [];
+            
             foreach($_FILES AS $field => $file) {
                 if (is_array($file)) {
                     $uploaded = UploadedFile::getInstancesByName($field);
@@ -177,7 +178,7 @@ class ContactController extends Controller
         
         } catch (\Exception $e) {
             
-            // Do nothing on error
+            return [];
             
         }
     }
