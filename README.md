@@ -47,9 +47,9 @@ This plugin also supports attachments. The following is an example of sending an
         formData.append('files[]', file);
     });
     
-    formData('fromName', this.form.name);
-    formData('fromEmail', this.form.email);
-    formData('subject', 'My Email');
+    formData.append('fromName', this.form.name);
+    formData.append('fromEmail', this.form.email);
+    formData.append('subject', 'My Email');
     
     axios.post('contact', formData, {
         headers: {
