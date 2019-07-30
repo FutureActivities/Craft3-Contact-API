@@ -1,5 +1,29 @@
 {% import "_includes/forms" as forms %}
 
+{% macro attachmentUploadLocationInput(name, settings, inputSourceOptions) %}
+    {% from "_includes/forms" import select, text %}
+    <div class="flex">
+        <div>
+            {{ select({
+                id: name~'Source',
+                name: name~'Source',
+                options: inputSourceOptions,
+                value: settings[name~'Source'],
+            }) }}
+        </div>
+        <div class="flex-grow">
+            {{ text({
+                id: name~'Subpath',
+                class: 'ltr',
+                name: name~'Subpath',
+                value: settings[name~'Subpath'],
+                placeholder: "path/to/subfolder"|t('app')
+            }) }}
+        </div>
+    </div>
+{% endmacro %}
+{% from _self import attachmentUploadLocationInput %}
+
 {{ forms.textField({
     first: true,
     label: "Send To",
@@ -12,3 +36,8 @@
     name: 'recaptchaSecretKey',
     value: settings.recaptchaSecretKey
 }) }}
+
+{{ forms.field({
+    label: "Attachment Upload Location"|t('app'),
+    instructions: "Where should attached files be stored?"|t('app')
+}, attachmentUploadLocationInput('attachmentUploadLocation', settings, sourceOptions)) }}

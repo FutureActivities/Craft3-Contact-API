@@ -36,3 +36,32 @@ The following fields are not required but recommended in the post data:
 
 The plugin comes with a basic HTML email template that just lists all data in the post.
 You can override this on a site level by adding the template `_contact.twig` in the root of the sites `templates` folder.
+
+## Attachments
+
+This plugin also supports attachments. The following is an example of sending an attachment:
+
+    var formData = new FormData();
+    var fileInput = document.getElementById('upload');
+    fileInput.files.forEach(file => {
+        formData.append('files[]', file);
+    });
+    
+    formData('fromName', this.form.name);
+    formData('fromEmail', this.form.email);
+    formData('subject', 'My Email');
+    
+    axios.post('contact', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then(response => {
+        console.log(response);
+    });
+
+## Changelog
+
+### v1.1
+
+Added support for file attachments.
+Attachments are saved in the volume you select in the settings and attached to the email.

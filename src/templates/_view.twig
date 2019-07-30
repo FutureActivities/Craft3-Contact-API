@@ -24,6 +24,19 @@
     		</tbody>
     	</table>
     	</div>
+    	{% if data.attachments %}
+    	<h2>Attachments:</h2>
+    	<div class="message-wrapper">
+    	<table class="data fullwidth">
+    		<tbody>
+    			{% set assets = craft.assets().id(data.attachments) %}
+    			{% for asset in assets %}
+    			    <tr><th><a href="{{ asset.url }}" download>{{ asset.title|ucfirst }}</a></th><td>{{ asset.kind }}</td></tr>
+    			{% endfor %}
+    		</tbody>
+    	</table>
+    	</div>
+    	{% endif %}
     </div>
 </div>
 {% endblock %}

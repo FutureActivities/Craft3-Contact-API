@@ -32,6 +32,11 @@ class Contact extends Element
      */
     public $data;
     
+    /**
+     * @var string The contact form attachments
+     */
+    public $attachments;
+    
     public function afterSave(bool $isNew)
     {
         if ($isNew) {
@@ -42,6 +47,7 @@ class Contact extends Element
                     'fromEmail' => $this->fromEmail,
                     'subject' => $this->subject,
                     'data' => json_encode($this->data),
+                    'attachments' => implode(',', $this->attachments),
                     'recipient' => $this->recipient,
                 ])
                 ->execute();
@@ -52,7 +58,8 @@ class Contact extends Element
                     'fromEmail' => $this->fromEmail,
                     'subject' => $this->subject,
                     'recipient' => $this->recipient,
-                    'data' => json_encode($this->data)
+                    'data' => json_encode($this->data),
+                    'attachments' => implode(',', $this->attachments)
                 ], ['id' => $this->id])
                 ->execute();
         }

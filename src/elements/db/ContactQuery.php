@@ -53,6 +53,7 @@ class ContactQuery extends ElementQuery
             'contact_messages.subject',
             'contact_messages.recipient',
             'contact_messages.data',
+            'contact_messages.attachments',
         ]);
         
         if ($this->fromName) {
@@ -70,7 +71,6 @@ class ContactQuery extends ElementQuery
         if ($this->recipient) {
             $this->subQuery->andWhere(Db::parseParam('contact_messages.recipient', $this->recipient));
         }
-        
     
         return parent::beforePrepare();
     }

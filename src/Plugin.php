@@ -6,11 +6,14 @@ use craft\web\UrlManager;
 use craft\events\RegisterUrlRulesEvent;
 use craft\events\RegisterCpNavItemsEvent;
 use craft\web\twig\variables\Cp;
+use craft\elements\Asset;
+use craft\helpers\Html;
 
 class Plugin extends \craft\base\Plugin
 {
     public $hasCpSettings = true;
     public $hasCpSection = true;
+    public $schemaVersion = '1.1.0';
     
     public function init()
     {
@@ -34,6 +37,7 @@ class Plugin extends \craft\base\Plugin
         
         $this->setComponents([
             'recaptcha' => \futureactivities\contactapi\services\Recaptcha::class,
+            'assets' => \futureactivities\contactapi\services\Assets::class,
         ]);
     }
     
@@ -61,7 +65,24 @@ class Plugin extends \craft\base\Plugin
     protected function settingsHtml()
     {
         return \Craft::$app->getView()->renderTemplate('contactapi/settings', [
-            'settings' => $this->getSettings()
+            'settings' => $this->getSettings(),
+            'sourceOptions' => $this->getSourceOptions()
         ]);
+    }
+    
+    protected function getSourceOptions(): array
+    {
+        $sourceOptions = [];
+
+        foreach (Asset::sources('settings') as $key => $volume) {
+            if (!isset($volume['heading'])) {
+                $sourceOptions[] = [
+                    'label' => Html::encode($volume['label']),
+                    'value' => $volume['key']
+                ];
+            }
+        }
+
+        return $sourceOptions;
     }
 }

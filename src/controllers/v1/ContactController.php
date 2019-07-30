@@ -11,6 +11,7 @@ use futureactivities\navapi\data\NavDataProvider;
 use futureactivities\contactapi\elements\Contact;
 use futureactivities\contactapi\Plugin;
 use craft\mail\Message;
+use craft\web\UploadedFile;
 
 class ContactController extends Controller
 {
@@ -87,7 +88,7 @@ class ContactController extends Controller
             $sendTo = $entry->emailAddress;
         
         $this->saveContact($sendTo, $request->post());
-        $this->sendEmail($sendTo, $request->post());
+        // $this->sendEmail($sendTo, $request->post());
         
         return $this->asJson(['success' => true]);
     }
@@ -103,7 +104,9 @@ class ContactController extends Controller
         $contact->recipient = $to;
         
         unset($data['subject'], $data['fromName'], $data['fromEmail'], $data['g-recaptcha-response']);
+        
         $contact->data = $data;
+        $contact->attachments = $this->processAttachments();
         
         Craft::$app->elements->saveElement($contact);
     }
@@ -136,5 +139,31 @@ class ContactController extends Controller
         Craft::$app->mailer->send($message);
         
         \Craft::$app->view->setTemplateMode($oldMode);
+    }
+    
+    /**
+     * Check for any attachments in the request
+     */
+    protected function processAttachments()
+    {
+        $settings = Plugin::getInstance()->settings;
+        $folderId = Plugin::getInstance()->assets->resolveVolumePath($settings->attachmentUploadLocationSource, $settings->attachmentUploadLocationSubpath);
+        
+        $attachments = [];
+        foreach($_FILES AS $field => $file) {
+            if (is_array($file)) {
+                $uploaded = UploadedFile::getInstancesByName($field);
+                foreach($uploaded AS $upload) {
+                    try {
+                        $asset = Plugin::getInstance()->assets->uploadNewAsset($upload, $folderId);
+                        
+                        if ($asset)
+                            $attachments[] = $asset->id;
+                    } catch (\Exception $e) {}
+                }
+            }
+        }
+        
+        return $attachments;
     }
 }
