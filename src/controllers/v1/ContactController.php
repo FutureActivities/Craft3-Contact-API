@@ -155,24 +155,30 @@ class ContactController extends Controller
      */
     protected function processAttachments()
     {
-        $settings = Plugin::getInstance()->settings;
-        $folderId = Plugin::getInstance()->assets->resolveVolumePath($settings->attachmentUploadLocationSource, $settings->attachmentUploadLocationSubpath);
-        
-        $attachments = [];
-        foreach($_FILES AS $field => $file) {
-            if (is_array($file)) {
-                $uploaded = UploadedFile::getInstancesByName($field);
-                foreach($uploaded AS $upload) {
-                    try {
+        try {
+            
+            $settings = Plugin::getInstance()->settings;
+            $folderId = Plugin::getInstance()->assets->resolveVolumePath($settings->attachmentUploadLocationSource, $settings->attachmentUploadLocationSubpath);
+            
+            $attachments = [];
+            foreach($_FILES AS $field => $file) {
+                if (is_array($file)) {
+                    $uploaded = UploadedFile::getInstancesByName($field);
+                    foreach($uploaded AS $upload) {
                         $asset = Plugin::getInstance()->assets->uploadNewAsset($upload, $folderId);
                         
                         if ($asset)
                             $attachments[] = $asset;
-                    } catch (\Exception $e) {}
+                    }
                 }
             }
-        }
+            
+            return $attachments;
         
-        return $attachments;
+        } catch (\Exception $e) {
+            
+            // Do nothing on error
+            
+        }
     }
 }
