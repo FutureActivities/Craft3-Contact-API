@@ -34,8 +34,10 @@ class ContactController extends Controller
                 throw new \Exception('Invalid reCaptcha.');
         }
         
-        $this->saveContact($settings->email, $request->post());
-        $this->sendEmail($settings->email, $request->post());
+        $attachments = $this->processAttachments();
+        
+        $this->saveContact($settings->email, $request->post(), $attachments);
+        $this->sendEmail($settings->email, $request->post(), $attachments);
         
         return $this->asJson(['success' => true]);
     }
@@ -87,13 +89,15 @@ class ContactController extends Controller
         if (isset($entry->emailAddress))
             $sendTo = $entry->emailAddress;
         
-        $this->saveContact($sendTo, $request->post());
-        // $this->sendEmail($sendTo, $request->post());
+        $attachments = $this->processAttachments();
+        
+        $this->saveContact($sendTo, $request->post(), $attachments);
+        $this->sendEmail($sendTo, $request->post(), $attachments);
         
         return $this->asJson(['success' => true]);
     }
     
-    public function saveContact($to, $data)
+    public function saveContact($to, $data, $attachments = [])
     {
         $settings = Craft::$app->systemSettings->getSettings('email');
         
@@ -106,12 +110,14 @@ class ContactController extends Controller
         unset($data['subject'], $data['fromName'], $data['fromEmail'], $data['g-recaptcha-response']);
         
         $contact->data = $data;
-        $contact->attachments = $this->processAttachments();
+        $contact->attachments = array_map(function($asset) {
+            return $asset->id;
+        }, $attachments);
         
         Craft::$app->elements->saveElement($contact);
     }
     
-    protected function sendEmail($to, $data)
+    protected function sendEmail($to, $data, $attachments = [])
     {
         $subject = isset($data['subject']) ? $data['subject'] : 'Contact Form Enquiry';
         unset($data['subject'], $data['fromName'], $data['fromEmail'], $data['g-recaptcha-response']);
@@ -135,6 +141,9 @@ class ContactController extends Controller
         $message->setTo($to);
         $message->setSubject($subject);
         $message->setHtmlBody($html);
+        
+        foreach ($attachments AS $attachment)
+            $message->attach($attachment->getUrl());
     
         Craft::$app->mailer->send($message);
         
@@ -158,7 +167,7 @@ class ContactController extends Controller
                         $asset = Plugin::getInstance()->assets->uploadNewAsset($upload, $folderId);
                         
                         if ($asset)
-                            $attachments[] = $asset->id;
+                            $attachments[] = $asset;
                     } catch (\Exception $e) {}
                 }
             }
