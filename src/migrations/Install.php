@@ -16,6 +16,7 @@ class Install extends Migration
                 'subject' => $this->char(255)->notNull(),
                 'recipient' => $this->char(255)->notNull(),
                 'data' => $this->text(),
+                'attachments' => $this->text(),
                 'dateCreated' => $this->dateTime()->notNull(),
                 'dateUpdated' => $this->dateTime()->notNull(),
                 'uid' => $this->uid(),

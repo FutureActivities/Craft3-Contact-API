@@ -12,9 +12,12 @@ use futureactivities\contactapi\elements\Contact;
 use futureactivities\contactapi\Plugin;
 use craft\mail\Message;
 use craft\web\UploadedFile;
+use futureactivities\contactapi\events\ContactEvent;
 
 class ContactController extends Controller
 {
+    const EVENT_NEW_CONTACT = 'submitNewContact';
+    
     protected $allowAnonymous = true;
     
     public function actionIndex()
@@ -36,10 +39,23 @@ class ContactController extends Controller
         
         $attachments = $this->processAttachments();
         
-        $this->saveContact($settings->email, $request->post(), $attachments);
+        // Save contact
+        $contact = $this->saveContact($settings->email, $request->post(), $attachments);
+        
+        // Send contact email
         $this->sendEmail($settings->email, $request->post(), $attachments);
         
-        return $this->asJson(['success' => true]);
+        // Output
+        $response = ['success' => true];
+        
+        // Custom event
+        $event = new ContactEvent([
+            'contact' => $contact,
+            'response' => $response
+        ]);
+        $this->trigger(self::EVENT_NEW_CONTACT, $event);
+        
+        return $this->asJson($event->response);
     }
     
     public function actionEntry($id)
@@ -91,10 +107,20 @@ class ContactController extends Controller
         
         $attachments = $this->processAttachments();
         
-        $this->saveContact($sendTo, $request->post(), $attachments);
+        $contact = $this->saveContact($sendTo, $request->post(), $attachments);
         $this->sendEmail($sendTo, $request->post(), $attachments);
         
-        return $this->asJson(['success' => true]);
+        // Output
+        $response = ['success' => true];
+        
+        // Custom event
+        $event = new ContactEvent([
+            'contact' => $contact,
+            'response' => $response
+        ]);
+        $this->trigger(self::EVENT_NEW_CONTACT, $event);
+        
+        return $this->asJson($event->response);
     }
     
     public function saveContact($to, $data, $attachments = [])
@@ -115,6 +141,8 @@ class ContactController extends Controller
         }, $attachments);
         
         Craft::$app->elements->saveElement($contact);
+        
+        return $contact;
     }
     
     protected function sendEmail($to, $data, $attachments = [])

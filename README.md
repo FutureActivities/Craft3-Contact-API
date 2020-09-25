@@ -61,6 +61,10 @@ This plugin also supports attachments. The following is an example of sending an
 
 ## Changelog
 
+### v1.2
+
+Add events
+
 ### v1.1
 
 Added support for file attachments.
