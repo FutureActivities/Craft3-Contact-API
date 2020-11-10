@@ -1,9 +1,7 @@
 # Craft 3 Contact API
 
-This plugin adds the ability to send contact forms via the REST API.
+This plugin adds the ability to send contact forms via a REST API endpoint.
 Messages are emailed to the address specified and saved in the CMS.
-
-Requires the [Future Activities Craft 3 REST API](https://github.com/FutureActivities/Craft3-REST-API) plugin.
 
 ## Features
 
@@ -61,9 +59,9 @@ This plugin also supports attachments. The following is an example of sending an
 
 ## Changelog
 
-### v1.2
+### v2.0
 
-Add events
+Removed dependency on the REST API plugin so this plugin can be used on its own.
 
 ### v1.1
 

@@ -4,10 +4,6 @@ namespace futureactivities\contactapi\controllers\v1;
 use Craft;
 use craft\web\Controller;
 use yii\rest\ActiveController;
-use futureactivities\rest\Plugin as API;
-use futureactivities\rest\errors\BadRequestException;
-use futureactivities\rest\traits\ActionRemovable;
-use futureactivities\navapi\data\NavDataProvider;
 use futureactivities\contactapi\elements\Contact;
 use futureactivities\contactapi\Plugin;
 use craft\mail\Message;
@@ -19,6 +15,7 @@ class ContactController extends Controller
     const EVENT_NEW_CONTACT = 'submitNewContact';
     
     protected $allowAnonymous = true;
+    public $enableCsrfValidation = false;
     
     public function actionIndex()
     {
