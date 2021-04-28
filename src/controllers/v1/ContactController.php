@@ -36,11 +36,13 @@ class ContactController extends Controller
         
         $attachments = $this->processAttachments();
         
+        $sendTo = Craft::parseEnv($settings->email);
+        
         // Save contact
-        $contact = $this->saveContact($settings->email, $request->post(), $attachments);
+        $contact = $this->saveContact($sendTo, $request->post(), $attachments);
         
         // Send contact email
-        $this->sendEmail($settings->email, $request->post(), $attachments);
+        $this->sendEmail($sendTo, $request->post(), $attachments);
         
         // Output
         $response = ['success' => true];
@@ -79,7 +81,7 @@ class ContactController extends Controller
         if (!$entry)
             throw new \Exception('Invalid request.');
         
-        $sendTo = $settings->email;
+        $sendTo = Craft::parseEnv($settings->email);
         
         // Check for contact details Matrix field
         if (isset($entry->contactDetails)) {
@@ -125,8 +127,8 @@ class ContactController extends Controller
         $settings = Craft::$app->systemSettings->getSettings('email');
         
         $contact = new Contact();
-        $contact->fromName = isset($data['fromName']) ? $data['fromName'] : $settings['fromName'];
-        $contact->fromEmail = isset($data['fromEmail']) ? $data['fromEmail'] : $settings['fromEmail'];
+        $contact->fromName = isset($data['fromName']) ? $data['fromName'] : Craft::parseEnv($settings['fromName']);
+        $contact->fromEmail = isset($data['fromEmail']) ? $data['fromEmail'] : Craft::parseEnv($settings['fromEmail']);
         $contact->subject = isset($data['subject']) ? $data['subject'] : 'Contact Form Enquiry';
         $contact->recipient = $to;
         
@@ -162,7 +164,7 @@ class ContactController extends Controller
         $settings = Craft::$app->systemSettings->getSettings('email');
         
         $message = new Message();
-        $message->setFrom([$settings['fromEmail'] => $settings['fromName']]);
+        $message->setFrom([Craft::parseEnv($settings['fromEmail']) => Craft::parseEnv($settings['fromName'])]);
         $message->setTo($to);
         $message->setSubject($subject);
         $message->setHtmlBody($html);

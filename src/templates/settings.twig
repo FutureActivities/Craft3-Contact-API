@@ -24,11 +24,11 @@
 {% endmacro %}
 {% from _self import attachmentUploadLocationInput %}
 
-{{ forms.textField({
-    first: true,
+{{ forms.autosuggestField({
     label: "Send To",
     name: 'email',
-    value: settings.email
+    value: settings.email,
+    suggestEnvVars: true
 }) }}
 
 {{ forms.textField({

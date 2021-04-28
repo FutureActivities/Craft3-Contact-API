@@ -17,4 +17,9 @@ class Settings extends Model
             [['email'], 'required'],
         ];
     }
+    
+    public function getEmail(): string
+    {
+        return Craft::parseEnv($this->email);
+    }
 }
