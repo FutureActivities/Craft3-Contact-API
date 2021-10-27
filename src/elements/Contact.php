@@ -101,13 +101,13 @@ class Contact extends Element
             ]
         ];
         
-        $contacts = Contact::find()->groupBy('subject')->all();
+        $contacts = \Craft::$app->db->createCommand('SELECT subject FROM craft_contact_messages GROUP BY(subject)')->queryAll();
         foreach($contacts AS $contact) {
             $sources[] = [
-                'key' => $contact->subject,
-                'label' => $contact->subject,
+                'key' => $contact['subject'],
+                'label' => $contact['subject'],
                 'criteria' => [
-                    'subject' => $contact->subject    
+                    'subject' => $contact['subject']    
                 ]
             ];
         }
