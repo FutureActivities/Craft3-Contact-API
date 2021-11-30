@@ -48,7 +48,7 @@ class Contact extends Element
                     'subject' => $this->subject,
                     'data' => json_encode($this->data),
                     'attachments' => implode(',', $this->attachments),
-                    'recipient' => $this->recipient,
+                    'recipient' => $this->recipient ?? 'N/A',
                 ])
                 ->execute();
         } else {
@@ -57,7 +57,7 @@ class Contact extends Element
                     'fromName' => $this->fromName,
                     'fromEmail' => $this->fromEmail,
                     'subject' => $this->subject,
-                    'recipient' => $this->recipient,
+                    'recipient' => $this->recipient ?? 'N/A',
                     'data' => json_encode($this->data),
                     'attachments' => implode(',', $this->attachments)
                 ], ['id' => $this->id])

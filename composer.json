@@ -1,7 +1,7 @@
 {
   "name": "futureactivities/craft3-contact-api",
   "description": "Adds contact form support via a REST endpoint",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "type": "craft-plugin",
   "require": {
     "craftcms/cms": "^3.0.0"

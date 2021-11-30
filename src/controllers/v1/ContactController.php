@@ -101,7 +101,7 @@ class ContactController extends Controller
         }
         
         // Check for generic email field
-        if (isset($entry->emailAddress))
+        if (isset($entry->emailAddress) && $entry->emailAddress)
             $sendTo = $entry->emailAddress;
         
         $attachments = $this->processAttachments();
