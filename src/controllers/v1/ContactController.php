@@ -147,6 +147,7 @@ class ContactController extends Controller
     protected function sendEmail($to, $data, $attachments = [])
     {
         $subject = isset($data['subject']) ? $data['subject'] : 'Contact Form Enquiry';
+        $replyTo = isset($data['fromEmail']) ? $data['fromEmail'] : null;
         unset($data['subject'], $data['fromName'], $data['fromEmail'], $data['g-recaptcha-response']);
         
         $oldMode = \Craft::$app->view->getTemplateMode();
@@ -165,6 +166,7 @@ class ContactController extends Controller
         
         $message = new Message();
         $message->setFrom([Craft::parseEnv($settings['fromEmail']) => Craft::parseEnv($settings['fromName'])]);
+        if ($replyTo) $message->setReplyTo($replyTo);
         $message->setTo($to);
         $message->setSubject($subject);
         $message->setHtmlBody($html);
