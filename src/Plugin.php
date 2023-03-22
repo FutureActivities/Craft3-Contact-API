@@ -11,9 +11,9 @@ use craft\helpers\Html;
 
 class Plugin extends \craft\base\Plugin
 {
-    public $hasCpSettings = true;
-    public $hasCpSection = true;
-    public $schemaVersion = '1.1.0';
+    public bool $hasCpSettings = true;
+    public bool $hasCpSection = true;
+    public string $schemaVersion = '1.1.0';
     
     public function init()
     {
@@ -31,7 +31,7 @@ class Plugin extends \craft\base\Plugin
         
         // Register a custom CP route
         Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function(RegisterUrlRulesEvent $event) {
-            $event->rules['contactapi/<messageId:\d+>'] = 'contactapi/cp/view';
+            $event->rules['contactapi/<elementId:\d+>'] = 'contactapi/cp/view';
             $event->rules['contactapi/export'] = 'contactapi/cp/export';
         });
         
@@ -41,7 +41,7 @@ class Plugin extends \craft\base\Plugin
         ]);
     }
     
-    public function getCpNavItem()
+    public function getCpNavItem(): ?array
     {
         $item = parent::getCpNavItem();
         $item['label'] = 'Contact';
@@ -57,12 +57,12 @@ class Plugin extends \craft\base\Plugin
         $event->rules = array_merge($event->rules, $rules);
     }
     
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?\craft\base\Model
     {
         return new \futureactivities\contactapi\models\Settings();
     }
     
-    protected function settingsHtml()
+    protected function settingsHtml(): ?string
     {
         return \Craft::$app->getView()->renderTemplate('contactapi/settings', [
             'settings' => $this->getSettings(),

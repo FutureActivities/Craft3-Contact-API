@@ -1,4 +1,7 @@
-# Craft 3 Contact API
+# Craft Contact API
+
+Use v2 for Craft 3.
+use v3+ for Craft 4.
 
 This plugin adds the ability to send contact forms via a REST API endpoint.
 Messages are emailed to the address specified and saved in the CMS.
@@ -58,6 +61,10 @@ This plugin also supports attachments. The following is an example of sending an
     });
 
 ## Changelog
+
+### v3.0
+
+Craft 4 & PHP 8 support
 
 ### v2.0
 

@@ -11,7 +11,7 @@ class Settings extends Model
     public $attachmentUploadLocationSource = '';
     public $attachmentUploadLocationSubpath = '';
 
-    public function rules()
+    public function rules(): array
     {
         return [
             [['email'], 'required'],

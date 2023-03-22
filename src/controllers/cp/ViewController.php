@@ -11,15 +11,15 @@ use futureactivities\contactapi\Plugin;
 
 class ViewController extends Controller
 {
-    public function actionIndex(int $messageId = null): Response
+    public function actionIndex(int $elementId = null): Response
     {
         $variables = [];
         
-        if (!$messageId)
-            throw new \Exception('Missing message ID');
+        if (!$elementId)
+            throw new \Exception('Missing element ID');
         
         // Load message
-        $variables['message'] = Contact::find()->id($messageId)->one();
+        $variables['message'] = Contact::find()->id($elementId)->one();
         
         // Breadcrumbs
         $variables['crumbs'] = [

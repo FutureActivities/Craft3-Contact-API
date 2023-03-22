@@ -14,7 +14,7 @@ class ContactController extends Controller
 {
     const EVENT_NEW_CONTACT = 'submitNewContact';
     
-    protected $allowAnonymous = true;
+    protected array|int|bool $allowAnonymous = true;
     public $enableCsrfValidation = false;
     
     public function actionIndex()
@@ -124,7 +124,7 @@ class ContactController extends Controller
     
     public function saveContact($to, $data, $attachments = [])
     {
-        $settings = Craft::$app->systemSettings->getSettings('email');
+        $settings = Craft::$app->projectConfig->get('email');
         
         $contact = new Contact();
         $contact->fromName = isset($data['fromName']) ? $data['fromName'] : Craft::parseEnv($settings['fromName']);
@@ -162,7 +162,7 @@ class ContactController extends Controller
             $html = Craft::$app->getView()->renderTemplate("/contactapi/_email", ['data' => $data]);
         }
         
-        $settings = Craft::$app->systemSettings->getSettings('email');
+        $settings = Craft::$app->projectConfig->get('email');
         
         $message = new Message();
         $message->setFrom([Craft::parseEnv($settings['fromEmail']) => Craft::parseEnv($settings['fromName'])]);

@@ -4,6 +4,7 @@ namespace futureactivities\contactapi\elements;
 use craft\base\Element;
 use craft\elements\db\ElementQueryInterface;
 use futureactivities\contactapi\elements\db\ContactQuery;
+use craft\helpers\UrlHelper;
 
 class Contact extends Element
 {
@@ -37,7 +38,13 @@ class Contact extends Element
      */
     public $attachments;
     
-    public function afterSave(bool $isNew)
+    public static function refHandle(): ?string
+    {
+        return 'contactapi';
+    }
+    
+    
+    public function afterSave(bool $isNew): void
     {
         if ($isNew) {
             \Craft::$app->db->createCommand()
@@ -75,7 +82,6 @@ class Contact extends Element
     protected static function defineTableAttributes(): array
     {
         return [
-            'id' => \Craft::t('app', 'ID'),
             'fromName' => 'From Name',
             'subject' => 'Subject',
             'recipient' => 'Recipient',
@@ -115,8 +121,8 @@ class Contact extends Element
         return $sources;
     }
     
-    public function getCpEditUrl()
+    public function getCpEditUrl(): ?string
     {
-        return 'contactapi/'.$this->id;
+        return UrlHelper::cpUrl('contactapi/'.$this->id);
     }
 }
