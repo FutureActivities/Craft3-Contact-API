@@ -22,6 +22,9 @@ class ContactController extends Controller
         $request = Craft::$app->getRequest();
         $settings = Plugin::getInstance()->settings;
         
+        if ($request->isOptions)
+            return $this->asJson(true);
+        
         if (!$request->isPost)
             throw new \Exception('Invalid request.');
         
@@ -61,6 +64,9 @@ class ContactController extends Controller
     {
         $request = Craft::$app->getRequest();
         $settings = Plugin::getInstance()->settings;
+        
+        if ($request->isOptions)
+            return $this->asJson(true);
         
         if (!$request->isPost)
             throw new \Exception('Invalid request.');
