@@ -87,7 +87,7 @@ class ContactController extends Controller
         if (!$entry)
             throw new \Exception('Invalid request.');
         
-        $sendTo = Craft::parseEnv($settings->email);
+        $sendTo = null;
         
         // Check for contact details Matrix field
         if (isset($entry->contactDetails)) {
@@ -113,7 +113,7 @@ class ContactController extends Controller
         $attachments = $this->processAttachments();
         
         $contact = $this->saveContact($sendTo, $request->post(), $attachments);
-        $this->sendEmail($sendTo, $request->post(), $attachments);
+        if ($sendTo) $this->sendEmail($sendTo, $request->post(), $attachments);
         
         // Output
         $response = ['success' => true];
