@@ -5,6 +5,7 @@ use craft\base\Element;
 use craft\elements\db\ElementQueryInterface;
 use futureactivities\contactapi\elements\db\ContactQuery;
 use craft\helpers\UrlHelper;
+use craft\elements\User;
 
 class Contact extends Element
 {
@@ -124,5 +125,10 @@ class Contact extends Element
     public function getCpEditUrl(): ?string
     {
         return UrlHelper::cpUrl('contactapi/'.$this->id);
+    }
+    
+    public function canView(User $user):bool 
+    {
+        return true;
     }
 }
