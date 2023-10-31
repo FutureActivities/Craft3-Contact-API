@@ -191,7 +191,6 @@ class ContactController extends Controller
     protected function processAttachments()
     {
         try {
-            
             $settings = Plugin::getInstance()->settings;
             $folderId = Plugin::getInstance()->assets->resolveVolumePath($settings->attachmentUploadLocationSource, $settings->attachmentUploadLocationSubpath);
             
@@ -212,7 +211,8 @@ class ContactController extends Controller
             return $attachments;
         
         } catch (\Exception $e) {
-            
+            Craft::error($e->message.' in '.$e->file.'('.$e->line.')', 'contactapi');
+            Craft::info($e->getTraceAsString(), 'contactapi');
             return [];
             
         }

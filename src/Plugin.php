@@ -8,6 +8,10 @@ use craft\events\RegisterCpNavItemsEvent;
 use craft\web\twig\variables\Cp;
 use craft\elements\Asset;
 use craft\helpers\Html;
+use craft\log\MonologTarget;
+use Monolog\Formatter\LineFormatter;
+use Psr\Log\LogLevel;
+use Craft;
 
 class Plugin extends \craft\base\Plugin
 {
@@ -38,6 +42,18 @@ class Plugin extends \craft\base\Plugin
         $this->setComponents([
             'recaptcha' => \futureactivities\contactapi\services\Recaptcha::class,
             'assets' => \futureactivities\contactapi\services\Assets::class,
+        ]);
+        
+        Craft::getLogger()->dispatcher->targets[] = new MonologTarget([
+            'name' => 'contactapi',
+            'categories' => ['contactapi'],
+            'level' => LogLevel::INFO,
+            'logContext' => false,
+            'allowLineBreaks' => false,
+            'formatter' => new LineFormatter(
+                format: "%datetime% %message%\n",
+                dateFormat: 'Y-m-d H:i:s',
+            ),
         ]);
     }
     
