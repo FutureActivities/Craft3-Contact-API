@@ -8,10 +8,18 @@ use futureactivities\contactapi\elements\Contact;
 
 class ContactQuery extends ElementQuery
 {
+    public mixed $siteId = 1;
     public $fromName;
     public $fromEmail;
     public $subject;
     public $recipient;
+    
+    public function siteId($value): ElementQuery
+    {
+        $this->siteId = $value;
+
+        return $this;
+    }
     
     public function fromName($value)
     {
@@ -48,6 +56,7 @@ class ContactQuery extends ElementQuery
 
         // select the price column
         $this->query->select([
+            'contact_messages.siteId',
             'contact_messages.fromName',
             'contact_messages.fromEmail',
             'contact_messages.subject',
@@ -55,6 +64,10 @@ class ContactQuery extends ElementQuery
             'contact_messages.data',
             'contact_messages.attachments',
         ]);
+        
+        if ($this->siteId) {
+            $this->subQuery->andWhere(Db::parseParam('contact_messages.siteId', $this->siteId));
+        }
         
         if ($this->fromName) {
             $this->subQuery->andWhere(Db::parseParam('contact_messages.fromName', $this->fromName));

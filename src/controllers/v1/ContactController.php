@@ -79,8 +79,12 @@ class ContactController extends Controller
             if (!Plugin::getInstance()->recaptcha->verify($captcha))
                 throw new \Exception('Invalid reCaptcha.');
         }
-            
+        
+        $postRequest = $request->post();
+        $siteId = isset($postRequest['siteId']) ? $postRequest['siteId'] : '*'; 
+        
         $entry = \craft\elements\Entry::find()
+            ->siteId($siteId)
             ->id($id)
             ->one();
             
@@ -112,8 +116,8 @@ class ContactController extends Controller
         
         $attachments = $this->processAttachments();
         
-        $contact = $this->saveContact($sendTo, $request->post(), $attachments);
-        if ($sendTo) $this->sendEmail($sendTo, $request->post(), $attachments);
+        $contact = $this->saveContact($sendTo, $postRequest, $attachments);
+        if ($sendTo) $this->sendEmail($sendTo, $postRequest, $attachments);
         
         // Output
         $response = ['success' => true];
@@ -133,6 +137,7 @@ class ContactController extends Controller
         $settings = Craft::$app->projectConfig->get('email');
         
         $contact = new Contact();
+        $contact->siteId = isset($data['siteId']) ? $data['siteId'] : null;
         $contact->fromName = isset($data['fromName']) ? $data['fromName'] : Craft::parseEnv($settings['fromName']);
         $contact->fromEmail = isset($data['fromEmail']) ? $data['fromEmail'] : Craft::parseEnv($settings['fromEmail']);
         $contact->subject = isset($data['subject']) ? $data['subject'] : 'Contact Form Enquiry';
@@ -211,7 +216,7 @@ class ContactController extends Controller
             return $attachments;
         
         } catch (\Exception $e) {
-            Craft::error($e->message.' in '.$e->file.'('.$e->line.')', 'contactapi');
+            Craft::error($e->getMessage().' in '.$e->getFile().'('.$e->getLine().')', 'contactapi');
             Craft::info($e->getTraceAsString(), 'contactapi');
             return [];
             

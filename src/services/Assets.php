@@ -5,8 +5,6 @@ use Craft;
 use yii\base\Component;
 use futureactivities\contactapi\Plugin;
 use craft\elements\Asset;
-use craft\errors\InvalidSubpathException;
-use craft\errors\InvalidVolumeException;
 use craft\web\UploadedFile;
 use craft\helpers\Assets as AssetsHelper;
 
@@ -71,7 +69,7 @@ class Assets extends Component
         $assetsService = Craft::$app->getAssets();
 
         if ($volumeId === null || ($rootFolder = $assetsService->getRootFolderByVolumeId($volumeId)) === null) {
-            throw new InvalidVolumeException();
+            throw new \Exception('Unable to resolve volume');
         }
 
         // Are we looking for a subfolder?

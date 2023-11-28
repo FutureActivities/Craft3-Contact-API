@@ -10,6 +10,11 @@ use craft\elements\User;
 class Contact extends Element
 {
     /**
+     * @var integer Site ID
+     */
+    public ?int $siteId;
+    
+    /**
      * @var string From Name
      */
     public $fromName;
@@ -51,6 +56,7 @@ class Contact extends Element
             \Craft::$app->db->createCommand()
                 ->insert('{{%contact_messages}}', [
                     'id' => $this->id,
+                    'siteId' => $this->siteId,
                     'fromName' => $this->fromName,
                     'fromEmail' => $this->fromEmail,
                     'subject' => $this->subject,
@@ -62,6 +68,7 @@ class Contact extends Element
         } else {
             \Craft::$app->db->createCommand()
                 ->update('{{%contact_messages}}', [
+                    'siteId' => $this->siteId,
                     'fromName' => $this->fromName,
                     'fromEmail' => $this->fromEmail,
                     'subject' => $this->subject,
@@ -130,5 +137,15 @@ class Contact extends Element
     public function canView(User $user):bool 
     {
         return true;
+    }
+    
+    public static function isLocalized(): bool
+    {
+        return true;
+    }
+    
+    public function getSupportedSites(): array
+    {
+        return [$this->siteId];
     }
 }

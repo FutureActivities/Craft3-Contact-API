@@ -1,6 +1,7 @@
 # Craft Contact API
 
 Use v2 for Craft 3.
+
 use v3+ for Craft 4.
 
 This plugin adds the ability to send contact forms via a REST API endpoint.
@@ -60,7 +61,19 @@ This plugin also supports attachments. The following is an example of sending an
         console.log(response);
     });
 
+## Multisite
+
+When submitting your form data include a `siteId` property with the ID value
+of the site you are submitting to.
+
+If using the `/rest/v1/contact/<entryId>` endpoint, the siteId value will also
+be used to load the localised entry version.
+
 ## Changelog
+
+### v3.1
+
+Added multisite support
 
 ### v3.0
 
