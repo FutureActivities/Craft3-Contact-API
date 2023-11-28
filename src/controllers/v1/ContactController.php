@@ -66,13 +66,13 @@ class ContactController extends Controller
             throw new \Exception('Invalid request.');
             
         // Check if we are using reCaptcha
-        // if ($settings->recaptchaSecretKey) {
-        //     if (!$captcha = $request->getParam('g-recaptcha-response'))
-        //         throw new \Exception('Missing reCaptcha response.');
+        if ($settings->recaptchaSecretKey) {
+            if (!$captcha = $request->getParam('g-recaptcha-response'))
+                throw new \Exception('Missing reCaptcha response.');
                 
-        //     if (!Plugin::getInstance()->recaptcha->verify($captcha))
-        //         throw new \Exception('Invalid reCaptcha.');
-        // }
+            if (!Plugin::getInstance()->recaptcha->verify($captcha))
+                throw new \Exception('Invalid reCaptcha.');
+        }
         
         $postRequest = $request->post();
         $siteId = isset($postRequest['siteId']) ? $postRequest['siteId'] : '*'; 
