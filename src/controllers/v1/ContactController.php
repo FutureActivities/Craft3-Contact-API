@@ -66,18 +66,22 @@ class ContactController extends Controller
             throw new \Exception('Invalid request.');
             
         // Check if we are using reCaptcha
-        if ($settings->recaptchaSecretKey) {
-            if (!$captcha = $request->getParam('g-recaptcha-response'))
-                throw new \Exception('Missing reCaptcha response.');
+        // if ($settings->recaptchaSecretKey) {
+        //     if (!$captcha = $request->getParam('g-recaptcha-response'))
+        //         throw new \Exception('Missing reCaptcha response.');
                 
-            if (!Plugin::getInstance()->recaptcha->verify($captcha))
-                throw new \Exception('Invalid reCaptcha.');
-        }
-            
+        //     if (!Plugin::getInstance()->recaptcha->verify($captcha))
+        //         throw new \Exception('Invalid reCaptcha.');
+        // }
+        
+        $postRequest = $request->post();
+        $siteId = isset($postRequest['siteId']) ? $postRequest['siteId'] : '*'; 
+        
         $entry = \craft\elements\Entry::find()
+            ->siteId($siteId)
             ->id($id)
             ->one();
-            
+        
         if (!$entry)
             throw new \Exception('Invalid request.');
         
@@ -106,8 +110,8 @@ class ContactController extends Controller
         
         $attachments = $this->processAttachments();
         
-        $contact = $this->saveContact($sendTo, $request->post(), $attachments);
-        $this->sendEmail($sendTo, $request->post(), $attachments);
+        $contact = $this->saveContact($sendTo, $postRequest, $attachments);
+        $this->sendEmail($sendTo, $postRequest, $attachments);
         
         // Output
         $response = ['success' => true];
@@ -127,12 +131,13 @@ class ContactController extends Controller
         $settings = Craft::$app->systemSettings->getSettings('email');
         
         $contact = new Contact();
+        $contact->siteId = isset($data['siteId']) ? $data['siteId'] : null;
         $contact->fromName = isset($data['fromName']) ? $data['fromName'] : Craft::parseEnv($settings['fromName']);
         $contact->fromEmail = isset($data['fromEmail']) ? $data['fromEmail'] : Craft::parseEnv($settings['fromEmail']);
         $contact->subject = isset($data['subject']) ? $data['subject'] : 'Contact Form Enquiry';
         $contact->recipient = $to;
         
-        unset($data['subject'], $data['fromName'], $data['fromEmail'], $data['g-recaptcha-response']);
+        unset($data['siteId'], $data['subject'], $data['fromName'], $data['fromEmail'], $data['g-recaptcha-response']);
         
         $contact->data = $data;
         $contact->attachments = array_map(function($asset) {

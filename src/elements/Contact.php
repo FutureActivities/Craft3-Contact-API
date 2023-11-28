@@ -8,6 +8,11 @@ use futureactivities\contactapi\elements\db\ContactQuery;
 class Contact extends Element
 {
     /**
+     * @var integer Site ID
+     */
+    public $siteId;
+    
+    /**
      * @var string From Name
      */
     public $fromName;
@@ -43,6 +48,7 @@ class Contact extends Element
             \Craft::$app->db->createCommand()
                 ->insert('{{%contact_messages}}', [
                     'id' => $this->id,
+                    'siteId' => $this->siteId,
                     'fromName' => $this->fromName,
                     'fromEmail' => $this->fromEmail,
                     'subject' => $this->subject,
@@ -54,6 +60,7 @@ class Contact extends Element
         } else {
             \Craft::$app->db->createCommand()
                 ->update('{{%contact_messages}}', [
+                    'siteId' => $this->siteId,
                     'fromName' => $this->fromName,
                     'fromEmail' => $this->fromEmail,
                     'subject' => $this->subject,
@@ -118,5 +125,15 @@ class Contact extends Element
     public function getCpEditUrl()
     {
         return 'contactapi/'.$this->id;
+    }
+    
+    public static function isLocalized(): bool
+    {
+        return true;
+    }
+    
+    public function getSupportedSites(): array
+    {
+        return [$this->siteId];
     }
 }
