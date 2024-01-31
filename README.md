@@ -7,6 +7,11 @@ use v3+ for Craft 4.
 This plugin adds the ability to send contact forms via a REST API endpoint.
 Messages are emailed to the address specified and saved in the CMS.
 
+## Maintenance
+
+Maintenance of this plugin moving forward will be minimal.
+We suggest you use the Craft plugin FreeForm instead which integrates very well into GraphQL.
+
 ## Features
 
 - Submit contact form via REST API
