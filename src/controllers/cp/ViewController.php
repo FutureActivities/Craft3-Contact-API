@@ -19,7 +19,7 @@ class ViewController extends Controller
             throw new \Exception('Missing element ID');
         
         // Load message
-        $variables['message'] = Contact::find()->id($elementId)->one();
+        $variables['message'] = Contact::find()->id($elementId)->site('*')->one();
         
         // Breadcrumbs
         $variables['crumbs'] = [
