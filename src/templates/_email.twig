@@ -1,3 +1,10 @@
 {% for key,value in data %}
 <p>{{ key }}: <strong>{{ value|nl2br }}</strong></p>
 {% endfor %}
+
+{% if attachments is not empty %}
+    Attachment:
+    {% for attachment in attachments %}
+    <a href="{{ attachment.url }}">{{ attachment.filename }}</a>
+    {% endfor %}
+{% endif %}

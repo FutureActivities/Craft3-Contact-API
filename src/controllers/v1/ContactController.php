@@ -166,11 +166,11 @@ class ContactController extends Controller
         try {
             // Attempt to load contact template from local project
             \Craft::$app->view->setTemplateMode(\Craft::$app->view::TEMPLATE_MODE_SITE);
-            $html = Craft::$app->getView()->renderTemplate("_contact", ['data' => $data]);
+            $html = Craft::$app->getView()->renderTemplate("_contact", ['data' => $data, 'attachments' => $attachments]);
         } catch(\Exception $e) {
             // If not found, load the default one supplied by this plugin
             \Craft::$app->view->setTemplateMode(\Craft::$app->view::TEMPLATE_MODE_CP);
-            $html = Craft::$app->getView()->renderTemplate("/contactapi/_email", ['data' => $data]);
+            $html = Craft::$app->getView()->renderTemplate("/contactapi/_email", ['data' => $data, 'attachments' => $attachments]);
         }
         
         $settings = Craft::$app->projectConfig->get('email');
@@ -181,9 +181,6 @@ class ContactController extends Controller
         $message->setTo($to);
         $message->setSubject($subject);
         $message->setHtmlBody($html);
-        
-        foreach ($attachments AS $attachment)
-            $message->attach($attachment->getUrl());
     
         Craft::$app->mailer->send($message);
         
