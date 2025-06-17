@@ -19,7 +19,7 @@
     	<table class="data fullwidth">
     		<tbody>
     			{% for label, value in data.data|json_decode %}
-    				<tr><th>{{ label|ucfirst }}</th><td>{{ value|nl2br }}</td></tr>
+    				<tr><th>{{ label|capitalize }}</th><td>{{ value|nl2br }}</td></tr>
     			{% endfor %}
     		</tbody>
     	</table>
@@ -31,7 +31,7 @@
     		<tbody>
     			{% set assets = craft.assets().id(data.attachments) %}
     			{% for asset in assets %}
-    			    <tr><th><a href="{{ asset.url }}" download>{{ asset.title|ucfirst }}</a></th><td>{{ asset.kind }}</td></tr>
+    			    <tr><th><a href="{{ asset.url }}" download>{{ asset.title|capitalize }}</a></th><td>{{ asset.kind }}</td></tr>
     			{% endfor %}
     		</tbody>
     	</table>
