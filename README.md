@@ -74,6 +74,22 @@ of the site you are submitting to.
 If using the `/rest/v1/contact/<entryId>` endpoint, the siteId value will also
 be used to load the localised entry version.
 
+## Purging Data
+
+Run the following command to purge contact records older than X days:
+
+./craft contactapi/purge/run {days}
+
+If days has not been specified, this will default to 365 days / 1 year.
+
+Options available:
+
+```
+--force = Boolean. Default = false. Skip confirmation step so it can be used in cron jobs.
+--backups = Boolean. Default = true. Runs a full database backup before removing any records.
+--keep = Int. Default = 3. Number of database backups to retain.
+```
+
 ## Changelog
 
 ### v3.1
