@@ -14,7 +14,7 @@ class ContactQuery extends ElementQuery
     public $subject;
     public $recipient;
     
-    public function siteId($value): ElementQuery
+    public function siteId($value): static
     {
         $this->siteId = $value;
 

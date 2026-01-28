@@ -11,6 +11,7 @@ class Install extends Migration
             // create the products table
             $this->createTable('{{%contact_messages}}', [
                 'id' => $this->integer()->notNull(),
+                'siteId' => $this->integer()->null(),
                 'fromName' => $this->char(255)->notNull(),
                 'fromEmail' => $this->char(255)->notNull(),
                 'subject' => $this->char(255)->notNull(),

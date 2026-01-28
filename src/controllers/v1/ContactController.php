@@ -137,7 +137,7 @@ class ContactController extends Controller
         $settings = Craft::$app->projectConfig->get('email');
         
         $contact = new Contact();
-        $contact->siteId = isset($data['siteId']) ? $data['siteId'] : null;
+        $contact->siteId = isset($data['siteId']) ? $data['siteId'] : 1;
         $contact->fromName = isset($data['fromName']) ? $data['fromName'] : Craft::parseEnv($settings['fromName']);
         $contact->fromEmail = isset($data['fromEmail']) ? $data['fromEmail'] : Craft::parseEnv($settings['fromEmail']);
         $contact->subject = isset($data['subject']) ? $data['subject'] : 'Contact Form Enquiry';

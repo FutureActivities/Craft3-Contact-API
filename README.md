@@ -1,10 +1,10 @@
 # Craft Contact API
 
-Use v2 for Craft 3.
+Use v2 for Craft 3.  
+Use v3 for Craft 4.  
+Use v4 for Craft 5.
 
-use v3+ for Craft 4.
-
-This plugin adds the ability to send contact forms via a REST API endpoint.
+This plugin adds the ability to send contact forms via a REST API endpoint.  
 Messages are emailed to the address specified and saved in the CMS.
 
 ## Maintenance
@@ -91,6 +91,10 @@ Options available:
 ```
 
 ## Changelog
+
+### v4.0
+
+Craft 5 support
 
 ### v3.1
 
