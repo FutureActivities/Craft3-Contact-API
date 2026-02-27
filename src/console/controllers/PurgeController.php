@@ -47,7 +47,7 @@ class PurgeController extends Controller
         
         // Get all records older than date specified
         $cutoffDate = new \DateTime("-{$days} days");
-        $records = Contact::find()->dateCreated("< {$cutoffDate->format(\DateTime::ATOM)}")->all();
+        $records = Contact::find()->site('*')->dateCreated("< {$cutoffDate->format(\DateTime::ATOM)}")->all();
 
         foreach($records AS $record) {
             Craft::$app->getElements()->deleteElement($record, true);
